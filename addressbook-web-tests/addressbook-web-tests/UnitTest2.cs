@@ -7,21 +7,21 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
-namespace SeleniumTests
+namespace addressbook_web_tests
 {
     [TestFixture]
     public class UntitledTestCase
     {
         private IWebDriver driver;
         private StringBuilder verificationErrors;
-        private string baseURL;
+        private string baseURL= "http://localhost/addressbook";
         private bool acceptNextAlert = true;
 
         [SetUp]
         public void SetupTest()
         {
             driver = new FirefoxDriver();
-            baseURL = "https://www.google.com/";
+            
             verificationErrors = new StringBuilder();
         }
 
@@ -43,25 +43,29 @@ namespace SeleniumTests
         [Test]
         public void TheUntitledTestCaseTest()
         {
-            // ERROR: Caught exception [unknown command [מעךנûעü]]
-            // ERROR: Caught exception [unknown command [מעךנûעü]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [עטן]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [עטן]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [עטן]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [עטן]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [עטן]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
-            // ERROR: Caught exception [unknown command [םאזלטעו]]
+            driver.Navigate().GoToUrl(baseURL);
+            driver.FindElement(By.Name("user")).Click();
+            driver.FindElement(By.Name("user")).Clear();
+            driver.FindElement(By.Name("user")).SendKeys("admin");
+            driver.FindElement(By.Id("LoginForm")).Click();
+            driver.FindElement(By.Name("pass")).Click();
+            driver.FindElement(By.Name("pass")).Clear();
+            driver.FindElement(By.Name("pass")).SendKeys("secret");
+            driver.FindElement(By.XPath("//input[@value='Login']")).Click();
+            driver.FindElement(By.LinkText("groups")).Click();
+            driver.FindElement(By.XPath("//div[@id='content']/form/input[4]")).Click();
+            driver.FindElement(By.Name("group_name")).Click();
+            driver.FindElement(By.Name("group_name")).Clear();
+            driver.FindElement(By.Name("group_name")).SendKeys("group 1");
+            driver.FindElement(By.Name("group_header")).Click();
+            driver.FindElement(By.Name("group_header")).Clear();
+            driver.FindElement(By.Name("group_header")).SendKeys("Group header 1");
+            driver.FindElement(By.Name("group_footer")).Click();
+            driver.FindElement(By.Name("group_footer")).Clear();
+            driver.FindElement(By.Name("group_footer")).SendKeys("Group footer 2");
+            driver.FindElement(By.Name("submit")).Click();
+            driver.FindElement(By.LinkText("group page")).Click();
+            driver.FindElement(By.LinkText("Logout")).Click();
         }
         private bool IsElementPresent(By by)
         {
