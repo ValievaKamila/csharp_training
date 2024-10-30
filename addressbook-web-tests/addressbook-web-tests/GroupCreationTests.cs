@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -10,6 +11,7 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
+    [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
     public class GroupCreationTests
     {
         private IWebDriver driver;
@@ -100,7 +102,38 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("pass")).SendKeys(account.Password);
             driver.FindElement(By.XPath("//input[@value='Login']")).Click();
         }
+        [Test]
+        public void ContactCreationTest()
+        {
+            OpenHomePage();
+            Login(new AccountData("admin", "secret"));
+            GoToContactPage();
+            ContactData contact = new ContactData("Kamila3");
+            contact.Lastname = "Valieva3";
+            FillContactForm(contact);
+            InitContactCreation();
+            ReturnToGroupPage();
+        }
 
+        private void InitContactCreation()
+        {
+            driver.FindElement(By.XPath("//div[@id='content']/form/input[20]")).Click();
+        }
+
+        private void FillContactForm(ContactData contact)
+        {
+            driver.FindElement(By.Name("firstname")).Click();
+            driver.FindElement(By.Name("firstname")).Clear();
+            driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
+            driver.FindElement(By.Name("lastname")).Click();
+            driver.FindElement(By.Name("lastname")).Clear();
+            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
+        }
+
+        private void GoToContactPage()
+        {
+            driver.FindElement(By.LinkText("add new")).Click();
+        }
         private void OpenHomePage()
         {
             driver.Navigate().GoToUrl(baseURL);
@@ -152,6 +185,11 @@ namespace WebAddressbookTests
             {
                 acceptNextAlert = true;
             }
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
         }
     }
 }
