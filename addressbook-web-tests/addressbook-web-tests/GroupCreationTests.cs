@@ -107,15 +107,15 @@ namespace WebAddressbookTests
         {
             OpenHomePage();
             Login(new AccountData("admin", "secret"));
-            GoToContactPage();
+            CreateContactPage();
             ContactData contact = new ContactData("Kamila3");
             contact.Lastname = "Valieva3";
             FillContactForm(contact);
-            InitContactCreation();
+            FinishContactCreation();
             ReturnToGroupPage();
         }
 
-        private void InitContactCreation()
+        private void FinishContactCreation()
         {
             driver.FindElement(By.XPath("//div[@id='content']/form/input[20]")).Click();
         }
@@ -130,7 +130,7 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
         }
 
-        private void GoToContactPage()
+        private void CreateContactPage()
         {
             driver.FindElement(By.LinkText("add new")).Click();
         }
