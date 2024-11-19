@@ -18,12 +18,6 @@ namespace WebAddressbookTests
         [SetUp]
         public void SetupTest()
         {
-            //driver = new FirefoxDriver();
-            //baseURL = "http://localhost/addressbook";
-            //loginHelper = new LoginHelper(driver);
-            //navigator = new NavigationHelper(driver, baseURL);
-            //groupHelper = new GroupHelper(driver);
-            //contactHelper = new ContactHelper(driver);
             app = new ApplicationManager();
         }
 

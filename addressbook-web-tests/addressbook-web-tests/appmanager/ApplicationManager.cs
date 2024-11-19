@@ -18,13 +18,15 @@ namespace WebAddressbookTests
         protected NavigationHelper navigator;
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
-
+        
         public ApplicationManager()
         {
+            driver = new FirefoxDriver();
+            baseURL = "http://localhost/addressbook";
             loginHelper =new LoginHelper(driver);
             navigator = new NavigationHelper(driver, baseURL);
             groupHelper = new GroupHelper(driver);
-            contactHelper = new ContactHelper(driver);
+            contactHelper = new ContactHelper(driver);       
         }
 
         public void Stop()
