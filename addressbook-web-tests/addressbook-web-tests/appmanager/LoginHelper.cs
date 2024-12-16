@@ -1,20 +1,15 @@
 ﻿using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium;
+
 
 namespace WebAddressbookTests
 {
     public class LoginHelper : HelperBase
     {
-        public LoginHelper(IWebDriver driver) 
-            : base(driver) 
+        public LoginHelper(ApplicationManager manager) 
+            : base(manager) 
         { 
+		this.manager = manager;
+        this.driver = driver;
         }
         public void Login(AccountData account)
         {

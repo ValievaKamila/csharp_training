@@ -1,25 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
+
 
 namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
-        public ContactHelper(IWebDriver driver)
-        : base(driver)
+        public ContactHelper(ApplicationManager manager)
+        : base(manager)
         {
         }
-        public void CreateContactPage()
+        public ContactHelper Create(ContactData contact)
+        {
+            CreateContactPage();
+            FillContactForm(contact);
+            FinishContactCreation();
+            manager.Groups.ReturnToGroupPage();
+            return this;
+        }
+        public ContactHelper Modify(ContactData newData)
+        {
+            manager.Navigator.GoToHomePage();
+            InitContactModification();
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.GoToHomePage();
+            return this;
+        }
+
+        public ContactHelper Remove(int index)
+        {
+            manager.Navigator.GoToHomePage();
+            SelectContact(index);
+            RemoveContact();
+            manager.Navigator.GoToHomePage();
+            return this;
+        }
+
+        public ContactHelper CreateContactPage()
         {
             driver.FindElement(By.LinkText("add new")).Click();
+            return this;
         }
-        public void FillContactForm(ContactData contact)
+        public ContactHelper FillContactForm(ContactData contact)
         {
             driver.FindElement(By.Name("firstname")).Click();
             driver.FindElement(By.Name("firstname")).Clear();
@@ -27,10 +49,36 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("lastname")).Click();
             driver.FindElement(By.Name("lastname")).Clear();
             driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
+            return this;
         }
-        public void FinishContactCreation()
+        public ContactHelper FinishContactCreation()
         {
-            driver.FindElement(By.XPath("//div[@id='content']/form/input[20]")).Click();
+            driver.FindElement(By.XPath("//input[@value='Enter']")).Click();
+            return this;
         }
-    }
+
+        public ContactHelper SelectContact(int index)
+        {
+            driver.FindElement(By.Id("" + index + "")).Click();
+            return this;
+        }
+
+        public ContactHelper InitContactModification()
+        {
+            driver.FindElement(By.XPath("//img[@alt='Edit']")).Click();
+            return this;
+        }
+
+        public ContactHelper SubmitContactModification()
+        {
+            driver.FindElement(By.XPath("//input[@value='Update']")).Click();
+            return this;
+        }
+
+        private ContactHelper RemoveContact()
+        {
+            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            return this;
+        }
+    }   
 }
