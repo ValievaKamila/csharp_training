@@ -27,10 +27,10 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper Remove(int index)
+        public ContactHelper Remove()
         {
             manager.Navigator.GoToHomePage();
-            SelectContact(index);
+            SelectContact();
             RemoveContact();
             manager.Navigator.GoToHomePage();
             return this;
@@ -57,9 +57,9 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper SelectContact(int index)
+        public ContactHelper SelectContact()
         {
-            driver.FindElement(By.Id("" + index + "")).Click();
+            driver.FindElement(By.XPath("//input[@name='selected[]']")).Click();
             return this;
         }
 
