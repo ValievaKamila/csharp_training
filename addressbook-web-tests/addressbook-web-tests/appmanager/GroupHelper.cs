@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using System;
+using static System.Net.Mime.MediaTypeNames;    
 
 
 namespace WebAddressbookTests
@@ -15,7 +17,7 @@ namespace WebAddressbookTests
             InitGroupCreation();
             FillGroupForm(group);
             SubmitGroupCreation();
-            ReturnToGroupPage();
+            manager.Navigator.GoToGroupsPage();
             return this;
         }
 		    public GroupHelper Modify(int p, GroupData newData)
@@ -44,16 +46,10 @@ namespace WebAddressbookTests
         }
         public GroupHelper FillGroupForm(GroupData group) //string name, string header, string footer)
         {
-            driver.FindElement(By.Name("group_name")).Click();
-            driver.FindElement(By.Name("group_name")).Clear();
-            driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            driver.FindElement(By.Name("group_header")).Click();
-            driver.FindElement(By.Name("group_header")).Clear();
-            driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            driver.FindElement(By.Name("group_footer")).Click();
-            driver.FindElement(By.Name("group_footer")).Clear();
-            driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
-            return this;
+                Type(By.Name("group_name"), group.Name);
+                Type(By.Name("group_header"), group.Header);
+                Type(By.Name("group_footer"), group.Footer);
+                return this;
         }
         public GroupHelper SubmitGroupCreation()
         {
@@ -90,6 +86,14 @@ namespace WebAddressbookTests
         {
 			driver.FindElement(By.Name("update")).Click();
             return this;
+        }
+        public bool IsNotGroupPresent()
+        {
+            //return IsElementPresent(By.XPath("//span[@class='group']"));
+            //return IsElementPresent(By.XPath("//input[@name='selected[]']"));
+            //return IsElementPresent(By.XPath("//input[@name='selected[]']"));
+            manager.Navigator.GoToGroupsPage();
+            return !IsElementPresent(By.Name("selected[]"));
         }
     }
 }
