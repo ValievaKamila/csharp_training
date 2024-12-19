@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Collections.Generic;
 
 
 namespace WebAddressbookTests
@@ -10,7 +11,6 @@ namespace WebAddressbookTests
         [Test]
         public void GroupRemovalTest()
         {
-            //prepare - подготовка
             if (app.Groups.IsNotGroupPresent())
             {
                 GroupData group = new GroupData("CreatedGroupToDelete");
@@ -18,9 +18,15 @@ namespace WebAddressbookTests
                 group.Footer = "FooterCreatedGroupToDelete";
                 app.Groups.Create(group);
             }
+            List<GroupData> oldGroups = app.Groups.GetGroupList();
 
-            //action - действие
-            app.Groups.Remove(1);
+            app.Groups.Remove(0);
+
+            List<GroupData> newGroups = app.Groups.GetGroupList();
+            oldGroups.RemoveAt(0);
+            oldGroups.Sort();
+            newGroups.Sort();
+            Assert.AreEqual(oldGroups, newGroups);
         }
     }
 }

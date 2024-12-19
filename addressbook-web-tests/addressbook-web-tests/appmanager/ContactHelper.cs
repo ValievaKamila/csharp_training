@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System.Runtime.Serialization.DataContracts;
 
 
 namespace WebAddressbookTests
@@ -80,6 +81,21 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToHomePage();
             return !IsElementPresent(By.Name("entry"));
+        }
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+            manager.Navigator.GoToHomePage();
+            ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
+
+            foreach (IWebElement element in elements)
+            {
+                IList<IWebElement> cells = element.FindElements(By.TagName("td"));
+                ContactData contact = new ContactData(cells[2].Text);
+                contact.Lastname = cells[1].Text;
+                contacts.Add(contact);
+            }
+            return contacts;
         }
     }   
 }
