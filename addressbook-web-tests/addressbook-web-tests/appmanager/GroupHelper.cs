@@ -1,6 +1,4 @@
-﻿using OpenQA.Selenium;
-using System;
-using static System.Net.Mime.MediaTypeNames;    
+﻿using OpenQA.Selenium;  
 
 
 namespace WebAddressbookTests
@@ -55,6 +53,7 @@ namespace WebAddressbookTests
         {
             driver.FindElement(By.Name("submit")).Click();
             manager.Navigator.GoToGroupsPage();
+            groupCache = null;
             return this;
         }
         public GroupHelper ReturnToGroupPage()
@@ -70,6 +69,7 @@ namespace WebAddressbookTests
         public GroupHelper RemoveGroup()
         {
             driver.FindElement(By.Name("delete")).Click();
+            groupCache = null;
             return this;
         }
         public GroupHelper ReturnToGroupsPage()
@@ -85,6 +85,7 @@ namespace WebAddressbookTests
 		public GroupHelper SubmitGroupModification()
         {
 			driver.FindElement(By.Name("update")).Click();
+            groupCache = null;
             return this;
         }
         public bool IsNotGroupPresent()
@@ -93,16 +94,28 @@ namespace WebAddressbookTests
             return !IsElementPresent(By.Name("selected[]"));
         }
 
+        private List<GroupData> groupCache = null;
+
         public List<GroupData> GetGroupList()
         {
-            List<GroupData> groups = new List<GroupData>();
-            manager.Navigator.GoToGroupsPage();
-            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
-            foreach (IWebElement element in elements)
-            { 
-                groups.Add(new GroupData(element.Text));
+            if (groupCache == null)
+            {
+                groupCache = new List<GroupData>();
+                manager.Navigator.GoToGroupsPage();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+                foreach (IWebElement element in elements)
+                {
+                    
+                    groupCache.Add(new GroupData(element.Text)
+                    {Id = element.FindElement(By.TagName("input")).GetAttribute("value")});
+                }
             }
-            return groups;
+            return new List<GroupData>(groupCache);
+        }
+
+        public int GetGroupCount()
+        {
+            return driver.FindElements(By.CssSelector("span.group")).Count;
         }
     }
 }
