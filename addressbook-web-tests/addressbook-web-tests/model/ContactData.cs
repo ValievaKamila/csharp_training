@@ -41,7 +41,14 @@ namespace WebAddressbookTests
             {
                 return 1; //возвращает 1 - если текущий элемент больше, 0 - равны, -1 - текущий меньше другого
             }
-            return Lastname.CompareTo(other.Lastname); //сравнение имен
+            if (Lastname.CompareTo(other.Lastname) == 0)
+            {
+                return Firstname.CompareTo(other.Firstname);
+            }
+            else
+            {
+                return Lastname.CompareTo(other.Lastname);
+            }
         }
 
         public string Firstname { get; set; }
